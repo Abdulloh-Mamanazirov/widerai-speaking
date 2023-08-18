@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.layout {
+    background: url('/bg.png') no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+}
+
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: url('/nav.svg') no-repeat;
+    background-size: cover;
+    height: 90px;
+}
+
+.footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 150px;
+    background: url('/footer.png') no-repeat;
+    background-size: cover;
+}
+
+.listening-animation{
+    width: 200px;
+    height: 200px;  
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, aqua, blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.listening-animation .lis-col{
+    width: 15px;
+    background: #fff;
+    border-radius: 25px;
+}
+.listening-animation .lis-col-1{
+    height: 50px;
+    animation: col-1 .3s both infinite alternate;
+}
+@keyframes col-1 {
+    to {
+        transform: scaleY(1.5);
+    }
+}
+
+.listening-animation .lis-col-2{
+    height: 100px;
+    animation: col-2 .3s both infinite alternate;
+}
+@keyframes col-2 {
+    to {
+        transform: scaleY(.5);
+    }
+}
+
+.listening-animation .lis-col-3{
+    height: 70px;
+    animation: col-3 .3s both infinite alternate;
+}
+@keyframes col-3 {
+    to {
+        transform: scaleY(1.4);
+    }
+}
+
+.listening-animation .lis-col-4{
+    height: 90px;
+    animation: col-4 .3s both infinite alternate;
+}
+@keyframes col-4 {
+    to {
+        transform: scaleY(.8);
+    }
+}
+
+.listening-animation .lis-col-5{
+    height: 60px;
+    animation: col-5 .3s both infinite alternate;
+}
+@keyframes col-5 {
+    to {
+        transform: scaleY(1.5);
+    }
+}
