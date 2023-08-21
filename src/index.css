@@ -27,6 +27,14 @@
     background-size: cover;
 }
 
+.homeNav{
+    background: url('/nav.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: bottom;
+    width: 100%;
+}
+
 .listening-animation{
     width: 200px;
     height: 200px;  
