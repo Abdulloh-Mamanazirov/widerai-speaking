@@ -1,11 +1,13 @@
 import { Avatar, Button, Dropdown, Modal, Typography } from "antd";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSpeechSynthesis } from "react-speech-kit";
 import { toast } from "react-toastify";
-import { useVoice } from "../Hooks";
+import { useVoice, useTimer } from "../Hooks";
 
 const Home = () => {
+  const navigate = useNavigate()
   const items = [
     {
       key: "1",
@@ -18,6 +20,7 @@ const Home = () => {
         <p
           onClick={() => {
             localStorage.removeItem("widerai-token");
+            navigate('/signin')
           }}
         >
           Log out
@@ -33,6 +36,7 @@ const Home = () => {
   let [questions, setQuestions] = useState([]);
   let [answered, setAnswered] = useState(false);
   let [editedAnswer, setEditedAnswer] = useState("");
+  let [minutes, seconds, start] = useTimer(10);
   let { text, listen, clearText, isListening, voiceSupported } = useVoice();
   const { speak } = useSpeechSynthesis();
 
@@ -89,7 +93,6 @@ const Home = () => {
       setAnswered(false)
       questions.push(data?.mock_questions)
     }
-    console.log(data, status);
   }
 
   async function submitAnswer() {
@@ -113,7 +116,7 @@ const Home = () => {
         </Dropdown>
       </nav>
       <div className="text-white">
-        <p className="text-3xl font-bold text-white mb-5">timer Part {part}</p>
+        <p className="text-3xl font-bold text-white mb-5">Part {part}</p>
         {currentQuestion ? (
           <p className="p-3 mb-5 max-w-prose w-96 rounded-md text-white bg-gray-400 bg-opacity-40">
             {currentQuestion}
@@ -134,10 +137,13 @@ const Home = () => {
           Read again
         </Button>
         <div>
-          <div className="flex items-center gap-3">
+          {part === 2 ? <div className="flex items-center gap-3">
             <p>Preparation time:</p>
-            <span>00:01:00</span>
-          </div>
+            <span>
+              {minutes}:{seconds < 10 ? "0" : ""}
+              {seconds}
+            </span>
+          </div> : <></>}
         </div>
       </div>
       <div className="">

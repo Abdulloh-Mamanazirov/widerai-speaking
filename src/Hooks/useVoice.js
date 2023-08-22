@@ -32,7 +32,9 @@ const useVoice = () => {
   }, []);
 
   const clearText = () => {
-    setText([])
+    // setText([])
+    text.length = 0
+    text = []
   }
   
   return {
