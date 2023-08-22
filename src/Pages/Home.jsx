@@ -1,5 +1,6 @@
 import { Avatar, Button, Dropdown, Modal, Typography } from "antd";
 import axios from "axios";
+import { useEffect } from "react";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSpeechSynthesis } from "react-speech-kit";
@@ -37,7 +38,7 @@ const Home = () => {
   let [questions, setQuestions] = useState([]);
   let [answered, setAnswered] = useState(false);
   let [editedAnswer, setEditedAnswer] = useState("");
-  let [minutes, seconds, start] = useTimer(10);
+  let [minutes, seconds, start] = useTimer(60);
   let { text, listen, clearText, isListening, voiceSupported } = useVoice();
   const { speak } = useSpeechSynthesis();
 
@@ -51,6 +52,13 @@ const Home = () => {
       </div>
     );
   }
+
+  useEffect(()=>{
+    if(part === 2){
+      // console.log(remainingSeconds);
+      start()
+    }
+  },[part])
 
   async function startTest() {
     setStartExam(true);
