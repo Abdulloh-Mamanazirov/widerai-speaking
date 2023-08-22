@@ -1,6 +1,6 @@
 import { Avatar, Button, Dropdown, Modal, Typography } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSpeechSynthesis } from "react-speech-kit";
 import { toast } from "react-toastify";
@@ -29,6 +29,7 @@ const Home = () => {
     },
   ];
 
+  let answer = useRef()
   let [open, setOpen] = useState(false);
   let [startExam, setStartExam] = useState(false);
   let [currentQuestion, setCurrentQuestion] = useState("");
@@ -84,6 +85,7 @@ const Home = () => {
         }
       });
     if (status === 200) {
+      clearText()
       if(data?.defaultMessage) {
         await speak({ text: data?.defaultMessage });
       }
@@ -160,7 +162,7 @@ const Home = () => {
             <div hidden={!isListening} className="lis-col lis-col-4" />
             <div hidden={!isListening} className="lis-col lis-col-5" />
           </div>
-          <Button onClick={clearText} type="primary" danger>
+          <Button onClick={()=>{ answer.current.textContent = ''; return clearText()}} type="primary" danger>
             Clear text
           </Button>
         </div>
@@ -168,6 +170,7 @@ const Home = () => {
           {text.length > 0 ? (
             <div>
               <Typography.Paragraph
+              ref={answer}
                 editable={{
                   onChange: (text) => {
                     handleEditAnswer(text);
