@@ -1,18 +1,22 @@
 import axios from "axios";
 import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { COUNTRIES } from '../Constants'
+import { COUNTRIES } from "../Constants";
 import { toast } from "react-toastify";
 
 const Signup = () => {
-  const navigate = useNavigate()
-  
-  async function handleSignup(e){
-    let {data, status} = await axios.post('/users/signup',e)
+  const navigate = useNavigate();
 
-    if(status === 201 && data.token) {
-      localStorage.setItem('widerai-token' , data.token)
-      toast("Registered successfully",{type:"success"})
+  async function handleSignup(e) {
+    let { data, status } = await axios.post("/users/signup", e).catch((err) => {
+      if (err) {
+       return toast(err?.response?.data?.message, { type: "error" });
+      }
+    });
+
+    if (status === 201 && data.token) {
+      localStorage.setItem("widerai-token", data.token);
+      toast("Registered successfully", { type: "success" });
       return navigate("/");
     }
   }
@@ -97,7 +101,9 @@ const Signup = () => {
           <select className="w-full p-1 rounded-md">
             <option disabled selected></option>
             {COUNTRIES?.map?.((country, ind) => (
-              <option key={ind} value={country?.value}>{country?.title}</option>
+              <option key={ind} value={country?.value}>
+                {country?.title}
+              </option>
             ))}
           </select>
         </Form.Item>
@@ -132,11 +138,13 @@ const Signup = () => {
           >
             Submit
           </Button>
-        <Link className="ml-5" to='/signin'>Already have an account? Sign in</Link>
+          <Link className="ml-5" to="/signin">
+            Already have an account? Sign in
+          </Link>
         </Form.Item>
       </Form>
     </section>
   );
-}
+};
 
-export default Signup
+export default Signup;
