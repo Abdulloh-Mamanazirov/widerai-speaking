@@ -7,7 +7,12 @@ const Signin = () => {
   const navigate = useNavigate()
 
   async function handleLogin(e){
-    let {data, status} = await axios.post('/users/signin',e)
+    let { data, status } = await axios.post("/users/signin", e).catch((err) => {
+      if (err) {
+        toast(err?.response?.data?.message, { type: "error" });
+      }
+    });
+    
     if(status === 201 && data.token) {
       localStorage.setItem('widerai-token' , data.token)
       toast("Logged in successfully", { type: "success" });
