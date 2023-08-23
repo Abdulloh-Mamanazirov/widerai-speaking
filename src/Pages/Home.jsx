@@ -112,6 +112,7 @@ const Home = () => {
     });
     if (status === 201) {
       setAnswered(true)
+      clearText()
       return toast(data?.message, { type: "success" })
     };
   }
@@ -170,9 +171,9 @@ const Home = () => {
             <div hidden={!isListening} className="lis-col lis-col-4" />
             <div hidden={!isListening} className="lis-col lis-col-5" />
           </div>
-          <Button onClick={()=>{ answer.current.textContent = ''; return clearText()}} type="primary" danger>
+          {/* <Button onClick={()=>{ answer.current.textContent = ''; return clearText()}} type="primary" danger>
             Clear text
-          </Button>
+          </Button> */}
         </div>
         <div>
           {text.length > 0 ? (
