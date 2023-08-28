@@ -16,7 +16,7 @@ const Signin = () => {
     if(status === 201 && data.token) {
       localStorage.setItem('widerai-token' , data.token)
       toast("Logged in successfully", { type: "success" });
-      return navigate("/");
+      return navigate("/test");
     }
   }
 

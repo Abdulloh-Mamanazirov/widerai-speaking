@@ -1,16 +1,9 @@
 import { Button } from "antd"
 import { useEffect } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
-import { Nav, Footer } from "./Components"
-import { Signup, Signin, Home } from './Pages'
+import { Signup, Signin, Home, Landing } from './Pages'
 
-const App = () => {
-  const navigate = useNavigate()
-  useEffect(()=>{
-    const token = localStorage.getItem("widerai-token")
-    if(!token) navigate('/signup')  
-  },[])
-  
+const App = () => {  
   if(!window.navigator.onLine){
     return (
       <div className="layout absolute inset-0 grid place-items-center text-white">
@@ -25,13 +18,12 @@ const App = () => {
   
   return (
     <div className="layout">
-      <Nav/>
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<Landing/>}/>
+        <Route path="/test" element={<Home/>}/>
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/signin" element={<Signin/>}/>
       </Routes>
-      <Footer/>
     </div>
   )
 }

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useVoice, useTimer } from "../Hooks";
 
 const Home = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const items = [
     {
       key: "1",
@@ -21,7 +21,7 @@ const Home = () => {
         <p
           onClick={() => {
             localStorage.removeItem("widerai-token");
-            navigate('/signin')
+            navigate("/signin");
           }}
         >
           Log out
@@ -30,8 +30,9 @@ const Home = () => {
     },
   ];
 
-  let answer = useRef()
+  let answer = useRef();
   let [open, setOpen] = useState(false);
+  let [countdown, setCountdown] = useState(3);
   let [startExam, setStartExam] = useState(false);
   let [currentQuestion, setCurrentQuestion] = useState("");
   let [part, setPart] = useState(1);
@@ -53,12 +54,14 @@ const Home = () => {
     );
   }
 
-  useEffect(()=>{
-    if(part === 2){
-      // console.log(remainingSeconds);
-      start()
+  useEffect(() => {
+    const token = localStorage.getItem("widerai-token");
+    if (!token) navigate("/signup");
+
+    if (part === 2) {
+      start();
     }
-  },[part])
+  }, [part]);
 
   async function startTest() {
     setStartExam(true);
@@ -67,13 +70,18 @@ const Home = () => {
     setCurrentQuestion(data?.message);
     questions.push(data);
   }
-
+  
+  useEffect(() => {
+    countdown > 0 && setTimeout(() => setCountdown(countdown - 1), 1000);
+    if (countdown === 0) {
+      setCountdown("Start!");
+      setTimeout(() => startTest(), 1000);
+    }
+  }, [countdown]);
   if (!startExam) {
     return (
       <div className="absolute inset-0 grid place-items-center">
-        <Button onClick={startTest} type="primary" className="bg-blue-500">
-          Start the test
-        </Button>
+        <p className="text-white text-4xl font-medium">{countdown}</p>
       </div>
     );
   }
@@ -93,15 +101,15 @@ const Home = () => {
         }
       });
     if (status === 200) {
-      clearText()
-      if(data?.defaultMessage) {
+      clearText();
+      if (data?.defaultMessage) {
         await speak({ text: data?.defaultMessage });
       }
       speak({ text: data?.mock_questions });
       setCurrentQuestion(data?.mock_questions);
-      setPart(data?.mock_part)
-      setAnswered(false)
-      questions.push(data?.mock_questions)
+      setPart(data?.mock_part);
+      setAnswered(false);
+      questions.push(data?.mock_questions);
     }
   }
 
@@ -111,18 +119,18 @@ const Home = () => {
       text: answer,
     });
     if (status === 201) {
-      setAnswered(true)
-      clearText()
-      return toast(data?.message, { type: "success" })
-    };
+      setAnswered(true);
+      clearText();
+      return toast(data?.message, { type: "success" });
+    }
   }
 
   return (
-    <div className="h-screen relative flex items-center justify-center gap-32">
-      <nav className="homeNav fixed top-0 z-20 flex items-center justify-end text-white p-5">
+    <div className="h-screen relative flex items-center justify-center gap-32 max-[700px]:flex-col max-[700px]:gap-20">
+      <nav className="homeNav fixed top-0 z-20 flex items-center justify-end text-white p-5 max-[700px]:justify-start">
         <Dropdown menu={{ items }}>
           <Avatar style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}>
-            U
+            👤
           </Avatar>
         </Dropdown>
       </nav>
@@ -148,13 +156,17 @@ const Home = () => {
           Read again
         </Button>
         <div>
-          {part === 2 ? <div className="flex items-center gap-3">
-            <p>Preparation time:</p>
-            <span>
-              {minutes}:{seconds < 10 ? "0" : ""}
-              {seconds}
-            </span>
-          </div> : <></>}
+          {part === 2 ? (
+            <div className="flex items-center gap-3">
+              <p>Preparation time:</p>
+              <span>
+                {minutes}:{seconds < 10 ? "0" : ""}
+                {seconds}
+              </span>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
       <div className="">
@@ -179,7 +191,7 @@ const Home = () => {
           {text.length > 0 ? (
             <div>
               <Typography.Paragraph
-              ref={answer}
+                ref={answer}
                 editable={{
                   onChange: (text) => {
                     handleEditAnswer(text);
