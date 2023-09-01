@@ -31,6 +31,7 @@ const Home = () => {
   ];
 
   let answer = useRef();
+  let [me, setMe] = useState();
   let [open, setOpen] = useState(false);
   let [countdown, setCountdown] = useState(3);
   let [startExam, setStartExam] = useState(false);
@@ -61,6 +62,13 @@ const Home = () => {
     if (part === 2) {
       start();
     }
+
+    async function getMe(){
+      let {data} = await axios.get('/users/getSelfInfo')
+      setMe(data);
+    }
+    getMe()
+    
   }, [part]);
 
   async function startTest() {
@@ -135,7 +143,9 @@ const Home = () => {
       <nav className="homeNav fixed top-0 z-20 flex items-center justify-end text-white p-5 max-[700px]:justify-start">
         <Dropdown menu={{ items }}>
           <Avatar style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}>
-            👤
+            {(
+              me?.user_firstname?.split("")[0] + me?.user_lastname?.split("")[0]
+            ).toUpperCase()}
           </Avatar>
         </Dropdown>
       </nav>
@@ -230,10 +240,32 @@ const Home = () => {
           </Button>,
         ]}
       >
-        <p>Name...</p>
-        <p>Email...</p>
-        <p>Password...</p>
-        <p>Country...</p>
+        <div className="font-medium">
+          <div className="flex gap-3">
+            <p className="font-semibold">Name:</p>
+            <p>
+              {me?.user_firstname} {me?.user_lastname}
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <p className="font-semibold">Email:</p>
+            <p>
+              {me?.user_email}
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <p className="font-semibold">Country:</p>
+            <p>
+              {me?.user_country}
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <p className="font-semibold">Registered date:</p>
+            <p>
+              {(me?.user_created_at)}
+            </p>
+          </div>
+        </div>
       </Modal>
     </div>
   );
