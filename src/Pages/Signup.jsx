@@ -23,126 +23,127 @@ const Signup = () => {
 
   return (
     <section className="absolute px-3 inset-0 grid place-items-center">
-      <Form
-        name="signup"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        className="w-full md:w-1/2 bg-gray-400 bg-opacity-60 px-5 pt-2 rounded-lg"
-        onFinish={handleSignup}
-      >
-        <h2 className="text-white text-center text-3xl font-serif mb-5">
-          Sign Up
-        </h2>
-        <Form.Item
-          label="First name"
-          name="user_firstname"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your first name!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Last name"
-          name="user_lastname"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your last name!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Email"
-          name="user_email"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your email!",
-            },
-          ]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          label="Password"
-          name="user_password"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your password!",
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          label="Country"
-          name="user_country"
-          rules={[
-            {
-              required: true,
-              message: "Please select your country!",
-            },
-          ]}
-        >
-          <select className="w-full p-1 rounded-md">
-            <option disabled selected></option>
-            {COUNTRIES?.map?.((country, ind) => (
-              <option key={ind} value={country?.value}>
-                {country?.title}
-              </option>
-            ))}
-          </select>
-        </Form.Item>
-        <Form.Item
-          label="How did you find us?"
-          name="user_where_did"
-          rules={[
-            {
-              required: true,
-              message: "Please tell us how did you find us!",
-            },
-          ]}
-        >
-          <select className="w-full p-1 rounded-md">
-            <option disabled selected></option>
-            <option value="friend">Friend</option>
-            <option value="online">Online</option>
-            <option value="searching">Searching</option>
-            <option value="other">Other</option>
-          </select>
-        </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button
-            style={{ background: "#0077ff" }}
-            type="primary"
-            htmlType="submit"
-          >
-            Submit
-          </Button>
-          <Link className="ml-5" to="/signin">
-            Already have an account? Sign in
-          </Link>
-        </Form.Item>
-      </Form>
+      <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-300 bg-opacity-40">
+        <div className="hidden md:block w-1/2">
+          <img
+            className="aspect-square object-cover rounded-xl"
+            src="/signup-image.png"
+            alt="sign-up"
+          />
+        </div>
+        <div className="w-full md:w-1/2">
+          <Form onFinish={handleSignup}>
+            <h2 className="text-white text-center text-3xl font-serif mb-5">
+              Sign Up to <span className="landing-title" style={{fontSize:40}}>WiderAI</span>
+            </h2>
+            <Form.Item
+              name="user_firstname"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your first name!",
+                },
+              ]}
+            >
+              <Input
+                className="placeholder:text-gray-500"
+                placeholder="First name"
+              />
+            </Form.Item>
+            <Form.Item
+              name="user_lastname"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your last name!",
+                },
+              ]}
+            >
+              <Input
+                className="placeholder:text-gray-500"
+                placeholder="Last name"
+              />
+            </Form.Item>
+            <Form.Item
+              name="user_email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your email!",
+                },
+              ]}
+            >
+              <Input
+                type="email"
+                className="placeholder:text-gray-500"
+                placeholder="Email"
+              />
+            </Form.Item>
+            <Form.Item
+              name="user_password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your password!",
+                },
+              ]}
+            >
+              <Input.Password placeholder="********" />
+            </Form.Item>
+            <Form.Item
+              name="user_country"
+              rules={[
+                {
+                  required: true,
+                  message: "Please select your country!",
+                },
+              ]}
+            >
+              <select className="w-full p-1 rounded-md">
+                <option disabled selected>
+                  Select your country
+                </option>
+                {COUNTRIES?.map?.((country, ind) => (
+                  <option key={ind} value={country?.value}>
+                    {country?.title}
+                  </option>
+                ))}
+              </select>
+            </Form.Item>
+            <Form.Item
+              name="user_where_did"
+              rules={[
+                {
+                  required: true,
+                  message: "Please tell us how did you find us!",
+                },
+              ]}
+            >
+              <select className="w-full p-1 rounded-md">
+                <option disabled selected>
+                  How did you find us?
+                </option>
+                <option value="friend">Friend</option>
+                <option value="online">Online</option>
+                <option value="searching">Searching</option>
+                <option value="other">Other</option>
+              </select>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                style={{ background: "#0077ff" }}
+                type="primary"
+                htmlType="submit"
+              >
+                Submit
+              </Button>
+              <Link className="ml-5 text-white" to="/signin">
+                Already have an account? Sign in
+              </Link>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
     </section>
   );
 };
