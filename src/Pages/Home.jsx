@@ -65,7 +65,11 @@ const Home = () => {
 
   async function startTest() {
     setStartExam(true);
-    let { data } = await axios.get("/mockexam/sartMockExam");
+    let { data } = await axios.get("/mockexam/sartMockExam", {
+      headers:{
+        Authorization:`Bearer ${localStorage.getItem('widerai-token')}`
+      }
+    });
     await speak({ text: data?.message });
     setCurrentQuestion(data?.message);
     questions.push(data);
@@ -78,6 +82,7 @@ const Home = () => {
       setTimeout(() => startTest(), 1000);
     }
   }, [countdown]);
+
   if (!startExam) {
     return (
       <div className="absolute inset-0 grid place-items-center">
