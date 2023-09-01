@@ -1,3 +1,4 @@
-import { COUNTRIES } from './countries'
+import { COUNTRIES } from "./countries";
+import { CARDS } from "./landing-cards";
 
-export { COUNTRIES }
+export { COUNTRIES, CARDS };
