@@ -4,17 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Signin = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  async function handleLogin(e){
+  async function handleLogin(e) {
     let { data, status } = await axios.post("/users/signin", e).catch((err) => {
       if (err) {
         toast(err?.response?.data?.message, { type: "error" });
       }
     });
-    
-    if(status === 201 && data.token) {
-      localStorage.setItem('widerai-token' , data.token)
+
+    if (status === 201 && data.token) {
+      localStorage.setItem("widerai-token", data.token);
       toast("Logged in successfully", { type: "success" });
       return navigate("/test");
     }
@@ -22,77 +22,68 @@ const Signin = () => {
 
   return (
     <section className="absolute inset-0 grid place-items-center">
-      <Form
-        name="signin"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        className="w-full md:w-1/2 bg-gray-400 bg-opacity-60 px-5 pt-2 rounded-lg"
-        onFinish={handleLogin}
-      >
-        <h2 className="text-white text-center text-3xl font-serif mb-5">
-          Sign In
-        </h2>
-        <Form.Item
-          label="Email"
-          name="user_email"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your email!",
-            },
-          ]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          label="Password"
-          name="user_password"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your password!",
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button
-            style={{ background: "#0077ff" }}
-            type="primary"
-            htmlType="submit"
+      <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-300 bg-opacity-40">
+        <div className="hidden md:block w-1/2">
+          <img
+            className="aspect-square object-cover rounded-xl"
+            src="/login-image.png"
+            alt="sign-up"
+          />
+        </div>
+      <div className="w-full md:w-1/2">
+        <Form onFinish={handleLogin}>
+          <h2 className="text-white text-center text-3xl font-serif mb-5">
+            Sign In to{" "}
+            <span className="landing-title" style={{ fontSize: 40 }}>
+              WiderAI
+            </span>
+          </h2>
+          <Form.Item
+            name="user_email"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your email!",
+              },
+            ]}
           >
-            Submit
-          </Button>
-          <Link className="ml-5" to="/signup">
-            Don't have an account? Sign up
-          </Link>
-        </Form.Item>
-      </Form>
+            <Input
+              type="email"
+              className="placeholder:text-gray-500"
+              placeholder="Your Email"
+            />
+          </Form.Item>
+          <Form.Item
+            name="user_password"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your password!",
+              },
+            ]}
+          >
+            <Input.Password placeholder="*******" />
+          </Form.Item>
+          <Form.Item name="remember" valuePropName="checked">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+          <Form.Item>
+            <Button
+              style={{ background: "#0077ff" }}
+              type="primary"
+              htmlType="submit"
+            >
+              Submit
+            </Button>
+            <Link className="ml-5 text-white" to="/signup">
+              Don't have an account? Sign up
+            </Link>
+          </Form.Item>
+        </Form>
+      </div>
+      </div>
     </section>
   );
-}
+};
 
-export default Signin
+export default Signin;
