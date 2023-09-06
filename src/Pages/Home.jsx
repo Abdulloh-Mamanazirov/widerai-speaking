@@ -57,7 +57,7 @@ const Home = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("widerai-token");
-    if (window.location.pathname === '/test' && !token) navigate("/signup");
+    if (!token) return navigate("/signup");
 
     if (part === 2) {
       start();
