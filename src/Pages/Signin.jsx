@@ -21,8 +21,9 @@ const Signin = () => {
   }
 
   return (
-    <section className="absolute inset-0 grid place-items-center">
-      <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-300 bg-opacity-40">
+    <section className="landing absolute inset-0 grid place-items-center">
+      <div className="absolute inset-0 backdrop-blur-sm"></div>
+      <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-600 bg-opacity-60 backdrop-blur-md">
         <div className="hidden md:block w-1/2">
           <img
             className="aspect-square object-cover rounded-xl"
