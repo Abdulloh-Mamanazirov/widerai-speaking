@@ -3,6 +3,7 @@ import { LandingCard } from '../Components'
 import { CARDS } from '../Constants'
 
 const Landing = () => {
+  const token = localStorage.getItem("widerai-token");
   return (
     <div className="landing text-white">
       <nav className="sticky top-0 z-20 bg-blue-300 bg-opacity-20 backdrop-blur-md p-1">
@@ -33,7 +34,7 @@ const Landing = () => {
             placeat culpa nihil omnis officiis quo. Neque cumque voluptatem
             voluptatum inventore voluptatibus.
           </p>
-          <Link to={"/test"} className="landing-button">
+          <Link to={token ? "/test" : '/signup'} className="landing-button">
             Start speaking test
           </Link>
         </div>
