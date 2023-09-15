@@ -1,7 +1,7 @@
 import { Button } from "antd"
 import { useEffect } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
-import { Signup, Signin, Home, Landing, Success } from './Pages'
+import { Signup, Signin, Home, Landing, Success, NotFound } from './Pages'
 
 const App = () => {  
   if(!window.navigator.onLine){
@@ -24,6 +24,7 @@ const App = () => {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/signin" element={<Signin/>}/>
         <Route path="/success" element={<Success/>}/>
+        <Route path="/*" element={<NotFound/>}/>
       </Routes>
     </div>
   )
