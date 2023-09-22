@@ -56,33 +56,32 @@ const Home = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("widerai-token");
-    if (!token) return navigate("/signup");
+    // const token = localStorage.getItem("widerai-token");
+    // if (!token) return navigate("/signup");
 
     if (part === 2) {
       start();
     }
 
-    async function getMe(){
-      let {data} = await axios.get('/users/getSelfInfo')
+    async function getMe() {
+      let { data } = await axios.get("/users/getSelfInfo");
       setMe(data);
     }
-    getMe()
-    
+    getMe();
   }, [part]);
 
   async function startTest() {
     setStartExam(true);
     let { data } = await axios.get("/mockexam/sartMockExam", {
-      headers:{
-        Authorization:`Bearer ${localStorage.getItem('widerai-token')}`
-      }
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("widerai-token")}`,
+      },
     });
     await speak({ text: data?.message });
     setCurrentQuestion(data?.message);
     questions.push(data);
   }
-  
+
   useEffect(() => {
     countdown > 0 && setTimeout(() => setCountdown(countdown - 1), 1000);
     if (countdown === 0) {
@@ -139,7 +138,8 @@ const Home = () => {
   }
 
   return (
-    <div className="h-screen relative flex items-center justify-center gap-32 max-[700px]:flex-col max-[700px]:gap-20">
+    <div className="test h-screen relative flex items-center justify-center gap-32 max-[700px]:flex-col max-[700px]:gap-20">
+      <div className="absolute inset-0 backdrop-blur-sm" />
       {/* <nav className="homeNav fixed top-0 z-20 flex items-center justify-end text-white p-5 max-[700px]:justify-start">
         <Dropdown menu={{ items }}>
           <Avatar style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}>
@@ -149,7 +149,21 @@ const Home = () => {
           </Avatar>
         </Dropdown>
       </nav> */}
-      <div className="text-white">
+      <nav className="absolute top-0 bg-gradient-to-r from-[#aaaaaa50] w-full h-20">
+        <div className="flex items-center gap-5 ml-10 mt-1 text-white">
+          <img
+            width={70}
+            className="rounded-3xl"
+            src="logo-min.png"
+            alt="Logo"
+          />
+          <div>
+            <p className="text-xl font-semibold">WIDERAI</p>
+            <p className="[line-height:16px] font-thin">We always <br /> dominate!</p>
+          </div>
+        </div>
+      </nav>
+      <div className="text-white bg-slate-700 bg-opacity-50 backdrop-blur-lg rounded-lg p-3">
         <p className="text-3xl font-bold text-white mb-5">Part {part}</p>
         {currentQuestion ? (
           <p className="p-3 mb-5 max-w-prose w-96 rounded-md text-white bg-gray-400 bg-opacity-40">
@@ -184,13 +198,15 @@ const Home = () => {
           )}
         </div>
       </div>
-      <div className="">
+      <div className="z-10">
         <div className="flex items-end mb-5">
           <div className="listening-animation">
-            <span
+            <img
               onClick={listen}
               hidden={isListening}
-              className="fa-solid fa-microphone text-6xl text-white"
+              src="mic.png"
+              width={120}
+              className="mic"
             />
             <div hidden={!isListening} className="lis-col lis-col-1" />
             <div hidden={!isListening} className="lis-col lis-col-2" />
@@ -249,21 +265,15 @@ const Home = () => {
           </div>
           <div className="flex gap-3">
             <p className="font-semibold">Email:</p>
-            <p>
-              {me?.user_email}
-            </p>
+            <p>{me?.user_email}</p>
           </div>
           <div className="flex gap-3">
             <p className="font-semibold">Country:</p>
-            <p>
-              {me?.user_country}
-            </p>
+            <p>{me?.user_country}</p>
           </div>
           <div className="flex gap-3">
             <p className="font-semibold">Registered date:</p>
-            <p>
-              {(me?.user_created_at)}
-            </p>
+            <p>{me?.user_created_at}</p>
           </div>
         </div>
       </Modal>

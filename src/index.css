@@ -85,23 +85,31 @@ transition: all 0.3s ease;
     background-size: cover;
 }
 
-.homeNav{
+/* .homeNav{
     background: url('/nav.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-y: bottom;
     width: 100%;
+} */
+.test {
+    background:url('test-bg.png') no-repeat center;
+    background-size: cover; 
 }
 
+.mic {
+    filter: drop-shadow(0 0 5px white);
+}
 .listening-animation{
     width: 200px;
     height: 200px;  
     border-radius: 50%;
-    background: linear-gradient(to bottom right, aqua, blue);
+    background: radial-gradient( rgb(88, 0, 88), rgb(0, 0, 107));
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    box-shadow: 0 0 20px 5px rgba(0, 0, 255, 0.386);
 }
 
 .listening-animation .lis-col{
