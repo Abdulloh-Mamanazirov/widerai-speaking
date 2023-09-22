@@ -56,8 +56,8 @@ const Home = () => {
   }
 
   useEffect(() => {
-    // const token = localStorage.getItem("widerai-token");
-    // if (!token) return navigate("/signup");
+    const token = localStorage.getItem("widerai-token");
+    if (!token) return navigate("/signup");
 
     if (part === 2) {
       start();
