@@ -140,15 +140,15 @@ const Home = () => {
 
   return (
     <div className="h-screen relative flex items-center justify-center gap-32 max-[700px]:flex-col max-[700px]:gap-20">
-      <nav className="homeNav fixed top-0 z-20 flex items-center justify-end text-white p-5 max-[700px]:justify-start">
+      {/* <nav className="homeNav fixed top-0 z-20 flex items-center justify-end text-white p-5 max-[700px]:justify-start">
         <Dropdown menu={{ items }}>
           <Avatar style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}>
-            {(
+            {me ? (
               me?.user_firstname?.split("")[0] + me?.user_lastname?.split("")[0]
-            ).toUpperCase()}
+            ).toUpperCase() : ""}
           </Avatar>
         </Dropdown>
-      </nav>
+      </nav> */}
       <div className="text-white">
         <p className="text-3xl font-bold text-white mb-5">Part {part}</p>
         {currentQuestion ? (
