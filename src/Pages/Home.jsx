@@ -109,6 +109,7 @@ const Home = () => {
         if (err?.response?.data?.message === "Finished exam") {
           toast("Exam is finished!", { type: "info" });
           setCurrentQuestion(null);
+          navigate("/success",{replace:true})
           return;
         }
       });
