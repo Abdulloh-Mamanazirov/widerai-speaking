@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState } from "react";
 import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { COUNTRIES } from "../Constants";
@@ -6,13 +7,15 @@ import { toast } from "react-toastify";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   async function handleSignup(e) {
+    setLoading(true)
     let { data, status } = await axios.post("/users/signup", e).catch((err) => {
       if (err) {
        return toast(err?.response?.data?.message, { type: "error" });
       }
-    });
+    }).finally(()=>setLoading(false));
 
     if (status === 201 && data.token) {
       localStorage.setItem("widerai-token", data.token);
@@ -132,6 +135,7 @@ const Signup = () => {
             </Form.Item>
             <Form.Item>
               <Button
+                loading={loading}
                 style={{ background: "#0077ff" }}
                 type="primary"
                 htmlType="submit"

@@ -1,17 +1,20 @@
 import axios from "axios";
+import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Signin = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   async function handleLogin(e) {
+    setLoading(true)
     let { data, status } = await axios.post("/users/signin", e).catch((err) => {
       if (err) {
         toast(err?.response?.data?.message, { type: "error" });
       }
-    });
+    }).finally(()=>setLoading(false));
 
     if (status === 201 && data.token) {
       localStorage.setItem("widerai-token", data.token);
@@ -70,6 +73,7 @@ const Signin = () => {
           </Form.Item>
           <Form.Item>
             <Button
+              loading={loading}
               style={{ background: "#0077ff" }}
               type="primary"
               htmlType="submit"
