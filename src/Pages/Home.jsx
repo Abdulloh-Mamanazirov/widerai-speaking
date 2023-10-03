@@ -9,26 +9,6 @@ import { useVoice, useTimer } from "../Hooks";
 
 const Home = () => {
   const navigate = useNavigate();
-  const items = [
-    {
-      key: "1",
-      label: <p onClick={() => setOpen(true)}>View profile</p>,
-    },
-    {
-      key: "2",
-      danger: true,
-      label: (
-        <p
-          onClick={() => {
-            localStorage.removeItem("widerai-token");
-            navigate("/signin");
-          }}
-        >
-          Log out
-        </p>
-      ),
-    },
-  ];
 
   let answer = useRef();
   let [me, setMe] = useState();
@@ -247,37 +227,6 @@ const Home = () => {
           ) : null}
         </div>
       </div>
-      <Modal
-        open={open}
-        title="Profile"
-        onCancel={() => setOpen(false)}
-        footer={[
-          <Button key="back" onClick={() => setOpen(false)}>
-            Close
-          </Button>,
-        ]}
-      >
-        <div className="font-medium">
-          <div className="flex gap-3">
-            <p className="font-semibold">Name:</p>
-            <p>
-              {me?.user_firstname} {me?.user_lastname}
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <p className="font-semibold">Email:</p>
-            <p>{me?.user_email}</p>
-          </div>
-          <div className="flex gap-3">
-            <p className="font-semibold">Country:</p>
-            <p>{me?.user_country}</p>
-          </div>
-          <div className="flex gap-3">
-            <p className="font-semibold">Registered date:</p>
-            <p>{me?.user_created_at}</p>
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 };
