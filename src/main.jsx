@@ -8,7 +8,7 @@ import './index.css'
 
 // axios
 const token = localStorage.getItem('widerai-token')
-axios.defaults.baseURL = "http://3.75.189.175:3000/api";
+axios.defaults.baseURL = "http://3.125.33.174:3000/api";
 axios.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : null
 
 // toastify
