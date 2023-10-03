@@ -5,7 +5,7 @@ const Success = () => {
   const navigate = useNavigate();
   return (
     <div className="absolute inset-0 grid place-items-center">
-      <div className="bg-white rounded-xl">
+      <div className="bg-gradient-to-tl from-white to-gray-500 rounded-xl">
         <Result
           status="success"
           title="Successfully Finished!"
