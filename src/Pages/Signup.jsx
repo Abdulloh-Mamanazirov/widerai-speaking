@@ -20,7 +20,7 @@ const Signup = () => {
     if (status === 201 && data.token) {
       localStorage.setItem("widerai-token", data.token);
       toast("Registered successfully", { type: "success" });
-      return navigate("/test");
+      return navigate("/test",{replace:true});
     }
   }
 
