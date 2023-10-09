@@ -83,6 +83,10 @@ const Signin = () => {
             <Link className="ml-5 text-white" to="/signup">
               Don't have an account? Sign up
             </Link>
+            <br />
+            <Link className="ml-24 text-white" to="/forgot-password">
+              Forgot password? Restore it.
+            </Link>
           </Form.Item>
         </Form>
       </div>
