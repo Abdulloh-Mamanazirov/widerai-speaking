@@ -5,7 +5,7 @@ const NotFound = () => {
   const navigate = useNavigate();
   return (
     <div className="absolute inset-0 grid place-items-center">
-      <div className="bg-white rounded-xl">
+      <div className="bg-gray-50 rounded-xl">
         <Result
           status="404"
           title="Page Not Found!"
