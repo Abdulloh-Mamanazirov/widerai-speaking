@@ -40,7 +40,9 @@ const Home = () => {
     if (!token) return navigate("/signup");
 
     if (part === 2) {
-      start();
+      setTimeout(()=>{
+        start();
+      },3000)
     }
 
     async function getMe() {
