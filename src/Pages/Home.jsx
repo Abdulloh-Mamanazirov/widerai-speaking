@@ -1,25 +1,24 @@
-import { Avatar, Button, Dropdown, Modal, Typography } from "antd";
 import axios from "axios";
-import { useEffect } from "react";
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSpeechSynthesis } from "react-speech-kit";
 import { toast } from "react-toastify";
+import { Button, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useSpeechSynthesis } from "react-speech-kit";
 import { useVoice, useTimer } from "../Hooks";
 
 const Home = () => {
   const navigate = useNavigate();
 
   let answer = useRef();
-  let [me, setMe] = useState();
-  let [open, setOpen] = useState(false);
   let [countdown, setCountdown] = useState(3);
   let [startExam, setStartExam] = useState(false);
   let [currentQuestion, setCurrentQuestion] = useState("");
+  let [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   let [part, setPart] = useState(1);
   let [questions, setQuestions] = useState([]);
   let [answered, setAnswered] = useState(false);
   let [editedAnswer, setEditedAnswer] = useState("");
+  let [answers, setAnswers] = useState([]);
   let [minutes, seconds, start] = useTimer(60);
   let { text, listen, clearText, isListening, voiceSupported } = useVoice();
   const { speak } = useSpeechSynthesis();
@@ -36,33 +35,17 @@ const Home = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("widerai-token");
+    const token = sessionStorage.getItem("widerai-token");
     if (!token) return navigate("/signup");
 
     if (part === 2) {
-      setTimeout(()=>{
-        start();
-      },3000)
+      setTimeout(() => {
+        setTimeout(() => {
+          start();
+        }, 3000);
+      }, 4000);
     }
-
-    async function getMe() {
-      let { data } = await axios.get("/users/getSelfInfo");
-      setMe(data);
-    }
-    getMe();
   }, [part]);
-
-  async function startTest() {
-    setStartExam(true);
-    let { data } = await axios.get("/mockexam/sartMockExam", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("widerai-token")}`,
-      },
-    });
-    await speak({ text: data?.message });
-    setCurrentQuestion(data?.message);
-    questions.push(data);
-  }
 
   useEffect(() => {
     countdown > 0 && setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -71,6 +54,23 @@ const Home = () => {
       setTimeout(() => startTest(), 1000);
     }
   }, [countdown]);
+
+  async function startTest() {
+    setStartExam(true);
+    let { data, status } = await axios.get("/mock-questions", {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("widerai-token")}`,
+      },
+    }).catch((err)=>{if (err.response.status === 401) {
+      sessionStorage.removeItem("widerai-token")
+      window.location.replace('/')
+    }});
+    if (status === 200) {
+      setQuestions(data?.[0]);
+      setCurrentQuestion(data?.[0]?.questionPart1?.question1);
+      await speak({ text: data?.[0]?.questionPart1?.question1 });
+    }
+  }
 
   if (!startExam) {
     return (
@@ -85,39 +85,67 @@ const Home = () => {
   }
 
   async function getNextQuestion() {
-    let { data, status } = await axios
-      .get("/mockexam/getRandQuestion")
-      .catch((err) => {
-        if (err?.response?.data?.message === "Finished exam") {
-          toast("Exam is finished!", { type: "info" });
-          setCurrentQuestion(null);
-          navigate("/success",{replace:true})
-          return;
-        }
-      });
-    if (status === 200) {
-      clearText();
-      if (data?.defaultMessage) {
-        await speak({ text: data?.defaultMessage });
+    clearText();
+    setCurrentQuestionNumber(currentQuestionNumber+1)
+    if(currentQuestionNumber !== 4){
+      switch (currentQuestionNumber) {
+        case  1:
+          await speak({ text: questions?.questionPart1?.question1 });
+          setCurrentQuestion(questions?.questionPart1?.question1);
+          break;
+        case  2:
+          await speak({ text: questions?.questionPart1?.question2 });
+          setCurrentQuestion(questions?.questionPart1?.question2);
+          break;
+        case  3:
+          await speak({ text: questions?.questionPart1?.question3 });
+          setCurrentQuestion(questions?.questionPart1?.question3);
+          break;
+        case  4:
+          await speak({ text: questions?.questionPart1?.question4 });
+          setCurrentQuestion(questions?.questionPart1?.question4);
+          break;
+  
+        default:
+          break;
       }
-      speak({ text: data?.mock_questions });
-      setCurrentQuestion(data?.mock_questions);
-      setPart(data?.mock_part);
-      setAnswered(false);
-      questions.push(data?.mock_questions);
+    }
+    if(currentQuestionNumber === 5){
+      setPart(2)
+      await speak({ text: questions?.questionPart2?.mainQuestion });
+      setCurrentQuestion(questions?.questionPart2?.mainQuestion);
+    }
+    if (currentQuestionNumber > 5) {
+      setPart(3)
+      switch (currentQuestionNumber) {
+        case 6:
+          await speak({ text: questions?.questionPart3?.question1 });
+          setCurrentQuestion(questions?.questionPart3?.question1);
+          break;
+        case 7:
+          await speak({ text: questions?.questionPart3?.question2 });
+          setCurrentQuestion(questions?.questionPart3?.question2);
+          break;
+        case 8:
+          await speak({ text: questions?.questionPart3?.question3 });
+          setCurrentQuestion(questions?.questionPart3?.question3);
+          break;
+        case 9:
+          await speak({ text: questions?.questionPart3?.question4 });
+          setCurrentQuestion(questions?.questionPart3?.question4);
+          break;
+
+        default:
+          break;
+      }
     }
   }
 
   async function submitAnswer() {
     let answer = editedAnswer ? editedAnswer : text.join(" ");
-    let { data, status } = await axios.post("/mockexam/acceptUserAnswer", {
-      text: answer,
-    });
-    if (status === 201) {
-      setAnswered(true);
-      clearText();
-      return toast(data?.message, { type: "success" });
-    }
+    answers.push(answer)
+    setAnswered(false);
+    return getNextQuestion()
   }
 
   return (
@@ -142,7 +170,9 @@ const Home = () => {
           />
           <div>
             <p className="text-xl font-semibold">WIDERAI</p>
-            <p className="[line-height:16px] font-thin">We always <br /> dominate!</p>
+            <p className="[line-height:16px] font-thin">
+              We always <br /> dominate!
+            </p>
           </div>
         </div>
       </nav>
@@ -183,9 +213,8 @@ const Home = () => {
       </div>
       <div className="z-10">
         <div className="flex items-end mb-5">
-          <div className="listening-animation">
+          <div onClick={listen} role={"button"} className="listening-animation">
             <img
-              onClick={listen}
               hidden={isListening}
               src="mic.png"
               width={120}

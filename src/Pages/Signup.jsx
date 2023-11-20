@@ -7,20 +7,23 @@ import { toast } from "react-toastify";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   async function handleSignup(e) {
-    setLoading(true)
-    let { data, status } = await axios.post("/users/signup", e).catch((err) => {
-      if (err) {
-       return toast(err?.response?.data?.message, { type: "error" });
-      }
-    }).finally(()=>setLoading(false));
+    setLoading(true);
+    let { data, status } = await axios
+      .post("/auth/signup", e)
+      .catch((err) => {
+        if (err) {
+          return toast(err?.response?.data?.message, { type: "error" });
+        }
+      })
+      .finally(() => setLoading(false));
 
     if (status === 201 && data.token) {
-      localStorage.setItem("widerai-token", data.token);
+      sessionStorage.setItem("widerai-token", data.token);
       toast("Registered successfully", { type: "success" });
-      return navigate("/test",{replace:true});
+      return navigate("/test", { replace: true });
     }
   }
 
@@ -38,10 +41,13 @@ const Signup = () => {
         <div className="w-full md:w-1/2">
           <Form onFinish={handleSignup}>
             <h2 className="text-white text-center text-3xl font-serif mb-5">
-              Sign Up to <span className="landing-title" style={{fontSize:40}}>WiderAI</span>
+              Sign Up to{" "}
+              <span className="landing-title" style={{ fontSize: 40 }}>
+                WiderAI
+              </span>
             </h2>
             <Form.Item
-              name="user_firstname"
+              name="first_name"
               rules={[
                 {
                   required: true,
@@ -55,7 +61,7 @@ const Signup = () => {
               />
             </Form.Item>
             <Form.Item
-              name="user_lastname"
+              name="last_name"
               rules={[
                 {
                   required: true,
@@ -69,7 +75,7 @@ const Signup = () => {
               />
             </Form.Item>
             <Form.Item
-              name="user_email"
+              name="email"
               rules={[
                 {
                   required: true,
@@ -84,7 +90,7 @@ const Signup = () => {
               />
             </Form.Item>
             <Form.Item
-              name="user_password"
+              name="password"
               rules={[
                 {
                   required: true,
@@ -92,7 +98,7 @@ const Signup = () => {
                 },
               ]}
             >
-              <Input.Password placeholder="********" />
+              <Input.Password minLength={8} placeholder="********" />
             </Form.Item>
             <Form.Item
               name="user_country"

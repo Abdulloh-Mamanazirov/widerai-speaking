@@ -10,14 +10,14 @@ const Signin = () => {
 
   async function handleLogin(e) {
     setLoading(true)
-    let { data, status } = await axios.post("/users/signin", e).catch((err) => {
+    let { data, status } = await axios.post("/auth/signin", e).catch((err) => {
       if (err) {
         toast(err?.response?.data?.message, { type: "error" });
       }
     }).finally(()=>setLoading(false));
 
     if (status === 201 && data.token) {
-      localStorage.setItem("widerai-token", data.token);
+      sessionStorage.setItem("widerai-token", data.token);
       toast("Logged in successfully", { type: "success" });
       return navigate("/test",{replace:true});
     }
@@ -43,7 +43,7 @@ const Signin = () => {
             </span>
           </h2>
           <Form.Item
-            name="user_email"
+            name="email"
             rules={[
               {
                 required: true,
@@ -58,7 +58,7 @@ const Signin = () => {
             />
           </Form.Item>
           <Form.Item
-            name="user_password"
+            name="password"
             rules={[
               {
                 required: true,
@@ -66,7 +66,7 @@ const Signin = () => {
               },
             ]}
           >
-            <Input.Password placeholder="*******" />
+            <Input.Password minLength={8} placeholder="*******" />
           </Form.Item>
           <Form.Item name="remember" valuePropName="checked">
             <Checkbox>Remember me</Checkbox>

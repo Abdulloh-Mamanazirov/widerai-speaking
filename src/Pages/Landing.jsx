@@ -8,8 +8,8 @@ import { CARDS } from "../Constants";
 const Landing = () => {
   let [me, setMe] = useState();
   let [open, setOpen] = useState(false);
-  const navigate = useNavigate()
-  const token = localStorage.getItem("widerai-token");
+  const navigate = useNavigate();
+  const token = sessionStorage.getItem("widerai-token");
   const items = [
     {
       key: "1",
@@ -21,7 +21,7 @@ const Landing = () => {
       label: (
         <p
           onClick={() => {
-            localStorage.removeItem("widerai-token");
+            sessionStorage.removeItem("widerai-token");
             navigate("/signin");
           }}
         >
@@ -53,16 +53,21 @@ const Landing = () => {
             Wider<span className="text-blue-300">AI</span>
           </h3>
         </div>
-        {me && <Dropdown menu={{ items }}>
-          <Avatar size="large" className="bg-gradient-to-br from-indigo-400 to-indigo-800 text-white">
-            {me
-              ? (
-                  me?.user_firstname?.split("")[0] +
-                  me?.user_lastname?.split("")[0]
-                ).toUpperCase()
-              : ""}
-          </Avatar>
-        </Dropdown>}
+        {me && (
+          <Dropdown menu={{ items }}>
+            <Avatar
+              size="large"
+              className="bg-gradient-to-br from-indigo-400 to-indigo-800 text-white"
+            >
+              {me
+                ? (
+                    me?.user_firstname?.split("")[0] +
+                    me?.user_lastname?.split("")[0]
+                  ).toUpperCase()
+                : ""}
+            </Avatar>
+          </Dropdown>
+        )}
       </nav>
 
       <main className="mt-8 md:mt-24 ml-10 md:ml-20 grid lg:grid-cols-2">
@@ -85,10 +90,11 @@ const Landing = () => {
         </div>
       </main>
       <section className="p-16 md:p-28">
-        <div className=" flex items-center justify-center md:justify-between flex-wrap">
+        <div className="grid md:grid-cols-2 gap-5 items-start lg:grid-cols-3">
           {CARDS.map((i, ind) => (
             <LandingCard
               key={ind}
+              to={i?.to}
               image={i.image}
               title={i.title}
               desc={i.desc}

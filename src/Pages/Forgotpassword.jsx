@@ -38,7 +38,7 @@ const Forgotpassword = () => {
       .finally(() => setLoading(false));
 
     if (status === 201 && data.token) {
-      localStorage.setItem("widerai-token", data.token);
+      sessionStorage.setItem("widerai-token", data.token);
       toast("Logged in successfully", { type: "success" });
       return navigate("/test", { replace: true });
     }

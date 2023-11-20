@@ -7,8 +7,9 @@ import App from './App.jsx'
 import './index.css'
 
 // axios
-const token = localStorage.getItem('widerai-token')
-axios.defaults.baseURL = "http://3.125.33.174:3000/api";
+const token = sessionStorage.getItem('widerai-token')
+// axios.defaults.baseURL = "http://3.125.33.174:3000/api";
+axios.defaults.baseURL = "http://localhost:4000/api";
 axios.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : null
 
 // toastify
