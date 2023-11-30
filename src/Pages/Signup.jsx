@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [howHeardValue, setHowHeardValue] = useState("");
 
   async function handleSignup(e) {
     setLoading(true);
@@ -30,10 +31,17 @@ const Signup = () => {
   return (
     <section className="landing absolute px-3 inset-0 grid place-items-center">
       <div className="absolute inset-0 backdrop-blur-sm"></div>
-      <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-600 bg-opacity-60 backdrop-blur-md">
-        <div className="hidden md:block w-1/2">
+      <div className="flex gap-3 p-3 rounded-xl bg-violet-950 bg-opacity-60 backdrop-blur-lg w-3/5">
+        <div className="relative hidden md:block min-h-full w-1/2">
+          <div className="absolute bottom-10 left-2 z-20 text-right">
+            <h2 className="font-bold drop-shadow-xl text-2xl text-white font-serif">
+              Join a community of <br /> English speakers
+            </h2>
+            <p className="font-bold opacity-75">with artificial intelligence</p>
+          </div>
+          <div className="z-10 absolute top-3 left-3 h-7 w-7 bg-gradient-to-br from-purple-800 to-violet-600 shadow-lg shadow-purple-950 rounded-full" />
           <img
-            className="aspect-square object-cover rounded-xl"
+            className="object-cover h-full rounded-xl brightness-[.8]"
             src="/signup-image.png"
             alt="sign-up"
           />
@@ -56,7 +64,7 @@ const Signup = () => {
               ]}
             >
               <Input
-                className="placeholder:text-gray-500"
+                className="placeholder:text-white/40 border border-purple-500 text-white bg-gradient-to-b from-violet-900 via-violet-950 to-violet-900"
                 placeholder="First name"
               />
             </Form.Item>
@@ -70,7 +78,7 @@ const Signup = () => {
               ]}
             >
               <Input
-                className="placeholder:text-gray-500"
+                className="placeholder:text-white/40 border border-purple-500 text-white bg-gradient-to-b from-violet-900 via-violet-950 to-violet-900"
                 placeholder="Last name"
               />
             </Form.Item>
@@ -85,7 +93,7 @@ const Signup = () => {
             >
               <Input
                 type="email"
-                className="placeholder:text-gray-500"
+                className="placeholder:text-white/40 border border-purple-500 text-white bg-gradient-to-b from-violet-900 via-violet-950 to-violet-900"
                 placeholder="Email"
               />
             </Form.Item>
@@ -98,7 +106,12 @@ const Signup = () => {
                 },
               ]}
             >
-              <Input.Password minLength={8} placeholder="********" />
+              <Input
+                type="password"
+                className="placeholder:text-white/40 border border-purple-500 text-white bg-gradient-to-b from-violet-900 via-violet-950 to-violet-900"
+                minLength={8}
+                placeholder="********"
+              />
             </Form.Item>
             <Form.Item
               name="user_country"
@@ -109,12 +122,16 @@ const Signup = () => {
                 },
               ]}
             >
-              <select className="w-full p-1 rounded-md">
+              <select className="w-full p-1 rounded-md placeholder:text-white/40 border border-purple-500 text-white bg-gradient-to-b from-violet-900 via-violet-950 to-violet-900">
                 <option disabled selected>
                   Select your country
                 </option>
                 {COUNTRIES?.map?.((country, ind) => (
-                  <option key={ind} value={country?.value}>
+                  <option
+                    className="bg-violet-950"
+                    key={ind}
+                    value={country?.value}
+                  >
                     {country?.title}
                   </option>
                 ))}
@@ -129,25 +146,54 @@ const Signup = () => {
                 },
               ]}
             >
-              <select className="w-full p-1 rounded-md">
+              <select
+                onChange={(e) => setHowHeardValue(e.target.value)}
+                className="w-full p-1 rounded-md placeholder:text-white/40 border border-purple-500 text-white bg-gradient-to-b from-violet-900 via-violet-950 to-violet-900"
+              >
                 <option disabled selected>
                   How did you find us?
                 </option>
-                <option value="friend">Friend</option>
-                <option value="online">Online</option>
-                <option value="searching">Searching</option>
-                <option value="other">Other</option>
+                <option className="bg-violet-950" value="friend">
+                  Friend
+                </option>
+                <option className="bg-violet-950" value="online">
+                  Online
+                </option>
+                <option className="bg-violet-950" value="searching">
+                  Searching
+                </option>
+                <option className="bg-violet-950" value="other">
+                  Other
+                </option>
               </select>
+            </Form.Item>
+            <Form.Item
+              hidden={howHeardValue !== "other"}
+              name="how_heard_other"
+              rules={[
+                {
+                  required: true,
+                  message: "Please fill this input!",
+                },
+              ]}
+            >
+              <Input
+                className="placeholder:text-white/40 border border-purple-500 text-white bg-gradient-to-b from-violet-900 via-violet-950 to-violet-900"
+                placeholder="Tell us how you found us"
+              />
             </Form.Item>
             <Form.Item>
               <Button
                 loading={loading}
                 style={{ background: "#0077ff" }}
                 type="primary"
+                className="w-full"
                 htmlType="submit"
               >
-                Submit
+                Sign Up
               </Button>
+            </Form.Item>
+            <Form.Item>
               <Link className="ml-5 text-white" to="/signin">
                 Already have an account? Sign in
               </Link>
