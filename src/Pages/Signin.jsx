@@ -18,8 +18,12 @@ const Signin = () => {
         }
       })
       .finally(() => setLoading(false));
-
-    if (status === 201 && data.token) {
+    let abs = data.user.roles.filter((role) => role.toLowerCase() === "admin");
+    if (status === 201 && data.token && abs[0] === "admin") {
+      sessionStorage.setItem("widerai-token", data.token);
+      toast("Logged in successfully", { type: "success" });
+      return navigate("/admin", { replace: true });
+    } else if (status === 201 && data.token) {
       sessionStorage.setItem("widerai-token", data.token);
       toast("Logged in successfully", { type: "success" });
       return navigate("/test", { replace: true });

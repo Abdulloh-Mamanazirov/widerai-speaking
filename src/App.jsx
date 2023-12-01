@@ -9,8 +9,28 @@ import {
   NotFound,
   ForgotPassword,
 } from "./Pages";
+import AdminPage from "./Pages/AdminPage";
+import GetUserById from "./Pages/AdminPages/GetUserById";
+import GetAllUsers from "./Pages/AdminPages/GetAllUsers";
+import GetUserByEmail from "./Pages/AdminPages/GetUserByEmail";
+import GetAllMockQuestions from "./Pages/AdminPages/GetAllMockQuestions";
 
 const App = () => {
+  // return (
+  //   <div>
+  //     <Routes>
+  //       <Route path="/admin" element={<AdminPage />}>
+  //         <Route path="getallusers" element={<GetAllUsers />} />
+  //         <Route path="getuserbyid" element={<GetUserById />} />
+  //         <Route path="getuserbyemail" element={<GetUserByEmail />} />
+  //         <Route path="getallmockquestions" element={<GetAllMockQuestions />} />
+  //       </Route>
+
+  //       <Route path="/success" element={<Success />} />
+  //       <Route path="/*" element={<NotFound />} />
+  //     </Routes>
+  //   </div>
+  // );
   if (!window.navigator.onLine) {
     return (
       <div className="layout absolute inset-0 grid place-items-center text-white">
@@ -36,6 +56,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/test" element={<Home />} />
+        <Route path="/admin" element={<AdminPage />}>
+          <Route path="getallusers" element={<GetAllUsers />} />
+          <Route path="getuserbyid" element={<GetUserById />} />
+          <Route path="getuserbyemail" element={<GetUserByEmail />} />
+          <Route path="getallmockquestions" element={<GetAllMockQuestions />} />
+        </Route>
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
